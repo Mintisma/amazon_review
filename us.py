@@ -9,8 +9,14 @@ import datetime
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'}
 s = requests.session()
 
-
 def get_review(asin, page):
+    def get_color(review):
+        try:
+            color = review.xpath('div/div[contains(@class, "review-format-strip")]/a/text()').extract()[-1][7:]
+        except:
+            color = None
+        return color
+
     def get_title(review):
         title = review.xpath('div/div/a[@data-hook="review-title"]/text()').extract_first('')
         return title
@@ -88,6 +94,7 @@ def get_review(asin, page):
             'helpful': get_helpful(review),
             'review_date': get_reviewDate(review),
             'reviewer': get_reviewer(review),
+            'color': get_color(review),
         }
         lst.append(data)
     return lst
