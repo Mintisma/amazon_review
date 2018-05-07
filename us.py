@@ -37,7 +37,10 @@ def get_review(asin, page):
         return verified
 
     def get_content(review):
-        content = review.xpath('div/div[@class="a-row review-data"]/span/text()').extract_first('')
+        try:
+            content = review.xpath('div/div[@class="a-row review-data"]/span/text()').extract_first('')
+        except:
+            content = review.xpath('div/div[@class="a-row a-spacing-medium review-data"]/span/text()').extract_first('')
         return content
 
     def get_helpful(review):
